@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Diario</title>
+    <style>
+        /* Importar fuente de escritura a mano */
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Caveat', cursive;
+            background-color: #f4e3c5; /* Color tipo papel viejo/pergamino */
+            color: #3e2723;
+            min-height: 100vh;
+            overflow: hidden; /* Evita que el fondo animado cree barras de desplazamiento */
+            position: relative;
+            /* Sombra interior para simular bordes quemados/viejos */
+            box-shadow: inset 0 0 100px rgba(139, 69, 19, 0.4);
+        }
+
+        /* --- FONDO ANIMADO DE TEXTO --- */
+        .fondo-texto {
+            position: fixed;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            z-index: -1;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            
+            /* Evitar selección del texto */
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-select: none;
+            
+            font-size: 2.5rem;
+            color: rgba(139, 69, 19, 0.12); /* Color café muy transparente */
+            line-height: 1;
+            
+            /* Animación hacia arriba y derecha */
+            animation: moverFondo 40s linear infinite;
+        }
+
+        @keyframes moverFondo {
+            0% { transform: rotate(-35deg) translateY(0); }
+            100% { transform: rotate(-35deg) translateY(-10%); }
+        }
+
+        /* --- ESTRUCTURA PRINCIPAL --- */
+        .contenedor {
+            display: flex;
+            justify-content: space-between;
+            padding: 2rem;
+            height: 100vh;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Estilo general para las cajas de los costados */
+        .panel {
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid #5a3b1c;
+            /* Borde con estilo de dibujo a mano alzada */
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            padding: 2rem;
+            width: 25%;
+            height: 80%;
+            backdrop-filter: blur(2px);
+            overflow-y: auto;
+        }
+
+        /* Ocultar barra de scroll en paneles */
+        .panel::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .lista-fechas {
+            list-style: none;
+            font-size: 2rem;
+        }
+
+        .lista-fechas li {
+            border-bottom: 2px solid rgba(90, 59, 28, 0.3);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .lista-fechas li:hover {
+            color: #8b4513;
+        }
+
+        /* Panel Central */
+        .panel-central {
+            width: 40%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 1rem;
+        }
+
+        .contador {
+            font-size: 4rem;
+            background: rgba(255, 255, 255, 0.4);
+            border: 3px solid #5a3b1c;
+            /* Borde irregular tipo boceto */
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            padding: 1.5rem 3rem;
+            text-align: center;
+            transform: rotate(-3deg); /* Ligera inclinación como en tu dibujo */
+        }
+
+        .panel-derecho {
+            font-size: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Capa del fondo de letras -->
+    <div class="fondo-texto" id="fondo-texto"></div>
+
+    <div class="contenedor">
+        <!-- Izquierda: Fechas -->
+        <div class="panel">
+            <ul class="lista-fechas">
+                <li>12, febrero</li>
+                <li>13, febrero</li>
+                <li>14, febrero</li>
+                <!-- Aquí puedes seguir añadiendo tus fechas -->
+            </ul>
+        </div>
+
+        <!-- Centro: Contador de días -->
+        <div class="panel-central">
+            <div class="contador">
+                <span id="dias-transcurridos">0</span> / 365 dias
+            </div>
+        </div>
+
+        <!-- Derecha: Ideas / Notas -->
+        <div class="panel panel-derecho">
+            <h2>nose</h2>
+            <p>done ideas...</p>
+        </div>
+    </div>
+
+    <script>
+        // 1. Generar el texto de fondo repetido
+        const contenedorFondo = document.getElementById('fondo-texto');
+        const frase = "fio te amo. ";
+        // Repetimos la frase muchas veces para llenar el contenedor gigante
+        contenedorFondo.innerText = frase.repeat(3000);
+
+        // 2. Calcular los días transcurridos
+        // El mes en JavaScript empieza en 0 (Enero es 0, Febrero es 1, Mayo es 4)
+        // Fecha de inicio: 12 de Febrero de 2026
+        const fechaInicio = new Date(2026, 1, 12); 
+        const fechaActual = new Date(); // La fecha de hoy
+
+        // Calculamos la diferencia en milisegundos
+        const diferenciaMilisegundos = fechaActual - fechaInicio;
+
+        // Convertimos los milisegundos a días (1000ms * 60s * 60m * 24h)
+        const diasTranscurridos = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+
+        // Mostramos el resultado en el HTML
+        document.getElementById('dias-transcurridos').innerText = diasTranscurridos;
+    </script>
+
+</body>
+</html>
