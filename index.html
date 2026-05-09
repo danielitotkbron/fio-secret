@@ -16,43 +16,56 @@
 
         body {
             font-family: 'Caveat', cursive;
-            background-color: #f4e3c5; /* Color tipo papel viejo/pergamino */
+            
+            /* --- EFECTO PAPEL QUEMADO 100% CSS --- */
+            background-color: #dcbfa3; /* Color base pergamino/papel viejo */
+            background-image: 
+                /* Sombra radial oscura en los bordes simulando lo quemado */
+                radial-gradient(circle at 50% 50%, transparent 30%, rgba(70, 30, 10, 0.85) 110%),
+                /* Ligera textura de líneas para darle imperfección al papel */
+                repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(139, 69, 19, 0.03) 2px, rgba(139, 69, 19, 0.03) 4px);
+            
             color: #3e2723;
             min-height: 100vh;
-            overflow: hidden; /* Evita que el fondo animado cree barras de desplazamiento */
+            overflow-x: hidden; 
             position: relative;
-            /* Sombra interior para simular bordes quemados/viejos */
-            box-shadow: inset 0 0 100px rgba(139, 69, 19, 0.4);
+            
+            /* Refuerzo de quemado en los límites de la pantalla */
+            box-shadow: inset 0 0 120px rgba(40, 15, 5, 0.9);
         }
 
-        /* --- FONDO ANIMADO DE TEXTO --- */
-        .fondo-texto {
+        /* --- CONTENEDOR DEL FONDO ANIMADO --- */
+        .fondo-animado-container {
             position: fixed;
-            top: -100%;
-            left: -100%;
-            width: 300%;
-            height: 300%;
-            z-index: -1;
-            display: flex;
-            flex-wrap: wrap;
-            align-content: flex-start;
-            
-            /* Evitar selección del texto */
-            pointer-events: none;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            z-index: 0; /* Por detrás de los paneles */
+            pointer-events: none; /* Nadie puede seleccionarlo */
             user-select: none;
             -webkit-user-select: none;
+            transform: rotate(-25deg); /* Inclinación hacia la esquina superior derecha */
+            overflow: hidden;
             
-            font-size: 2.5rem;
-            color: rgba(139, 69, 19, 0.12); /* Color café muy transparente */
-            line-height: 1;
-            
-            /* Animación hacia arriba y derecha */
-            animation: moverFondo 40s linear infinite;
+            /* Para que las letras se mezclen un poco con el color a quemado del fondo */
+            mix-blend-mode: multiply; 
+        }
+
+        .fondo-texto {
+            width: 100%;
+            font-size: 3.5rem;
+            color: rgba(90, 45, 20, 0.35); /* Texto marrón difuminado */
+            line-height: 1.1;
+            font-weight: bold;
+            text-align: justify;
+            /* Animación suave y continua hacia arriba */
+            animation: moverFondo 80s linear infinite;
         }
 
         @keyframes moverFondo {
-            0% { transform: rotate(-35deg) translateY(0); }
-            100% { transform: rotate(-35deg) translateY(-10%); }
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
         }
 
         /* --- BOTÓN MENÚ HAMBURGUESA --- */
@@ -61,7 +74,7 @@
             top: 20px;
             left: 20px;
             z-index: 100;
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(220, 191, 163, 0.5);
             border: 2px solid #5a3b1c;
             border-radius: 10px;
             padding: 10px;
@@ -69,12 +82,12 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
-            backdrop-filter: blur(2px);
+            backdrop-filter: blur(4px);
             transition: background 0.3s;
         }
 
         .btn-menu:hover {
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.6);
         }
 
         .btn-menu span {
@@ -83,7 +96,6 @@
             height: 3px;
             background-color: #5a3b1c;
             border-radius: 2px;
-            transition: 0.3s;
         }
 
         /* --- ESTRUCTURA PRINCIPAL --- */
@@ -91,47 +103,51 @@
             display: flex;
             justify-content: space-between;
             padding: 2rem;
-            padding-top: 5rem; /* Espacio para que no choque con el botón del menú */
+            padding-top: 6rem; /* Espacio para el botón de menú */
             height: 100vh;
             max-width: 1400px;
             margin: 0 auto;
             gap: 2rem;
-            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1; /* Asegura que esté por encima del fondo de texto */
         }
 
         /* Estilo general para las cajas */
         .panel {
             background: rgba(255, 255, 255, 0.3);
             border: 2px solid #5a3b1c;
-            /* Borde con estilo de dibujo a mano alzada */
+            /* Borde con estilo de dibujo a mano alzada como en tu boceto */
             border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
             padding: 2rem;
             height: 85%;
-            backdrop-filter: blur(2px);
+            backdrop-filter: blur(4px);
             overflow-y: auto;
-            transition: all 0.4s ease;
+            transition: all 0.5s ease;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
         }
 
         /* Ocultar barra de scroll en paneles */
         .panel::-webkit-scrollbar {
-            width: 5px;
+            width: 6px;
         }
         .panel::-webkit-scrollbar-thumb {
-            background: rgba(90, 59, 28, 0.3);
+            background: rgba(90, 59, 28, 0.4);
             border-radius: 10px;
         }
 
         /* Panel Izquierdo (Fechas) */
         .panel-izquierdo {
             width: 25%;
-            min-width: 250px;
+            min-width: 220px;
+            max-width: 300px;
             opacity: 1;
         }
 
-        /* Clase para ocultar el panel izquierdo cuando se toca el menú */
+        /* Estado oculto del panel izquierdo */
         .panel-izquierdo.oculto {
-            width: 0;
             min-width: 0;
+            max-width: 0;
+            width: 0;
             padding: 0;
             border: none;
             opacity: 0;
@@ -147,14 +163,16 @@
 
         .lista-fechas {
             list-style: none;
-            font-size: 2rem;
-            /* Evitar que el texto se rompa feo al contraerse */
+            font-size: 2.2rem;
             white-space: nowrap; 
         }
 
         .lista-fechas li {
-            border-bottom: 2px solid rgba(90, 59, 28, 0.3);
-            margin-bottom: 1rem;
+            /* Simulando la línea ondulada de tu boceto bajo las fechas */
+            border-bottom: 2px solid rgba(90, 59, 28, 0.6);
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            margin-bottom: 1.5rem;
             padding-bottom: 0.5rem;
             cursor: pointer;
             transition: color 0.3s;
@@ -164,17 +182,18 @@
             color: #8b4513;
         }
 
-        /* Panel Central */
+        /* Panel Central (Contador) */
         .panel-central {
             width: 35%;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             padding-top: 1rem;
+            transition: all 0.5s ease;
         }
 
         .contador {
-            font-size: 4rem;
+            font-size: 4.5rem;
             background: rgba(255, 255, 255, 0.4);
             border: 3px solid #5a3b1c;
             /* Borde irregular tipo boceto */
@@ -183,54 +202,54 @@
             text-align: center;
             transform: rotate(-3deg);
             white-space: nowrap;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
         }
 
         /* Panel Derecho (Ideas/Notas) */
         .panel-derecho {
             width: 35%;
             font-size: 2rem;
-            flex-grow: 1; /* Permite que este panel crezca si hay espacio */
+            flex-grow: 1; /* Permite crecer para ocupar el espacio vacío */
         }
 
-        /* Cuando el panel izquierdo está oculto, el derecho y el central se ajustan */
+        /* Al expandirse, el panel derecho toma el espacio de las fechas */
         .contenedor.expandido .panel-derecho {
-            width: 60%; /* Toma mucho más espacio para que puedas leer cómodamente */
+            width: 65%;
+        }
+        .contenedor.expandido .panel-central {
+            width: 30%;
         }
 
         /* --- ADAPTACIÓN PARA PANTALLAS PEQUEÑAS (CELULARES) --- */
         @media (max-width: 900px) {
-            body {
-                overflow: auto; /* Permite hacer scroll hacia abajo */
-            }
+            body { overflow-y: auto; }
             
             .contenedor {
                 flex-direction: column;
                 align-items: center;
                 height: auto;
                 padding-top: 5rem;
+                padding-bottom: 2rem;
             }
 
             .panel-izquierdo {
-                width: 95%;
-                height: 300px;
+                width: 95% !important;
+                max-width: 100%;
+                height: 250px;
             }
 
             .panel-central {
-                width: 100%;
+                width: 100% !important;
             }
 
             .panel-derecho {
-                width: 95%;
-                height: 500px; /* Más alto para escribir en celular */
+                width: 95% !important;
+                height: 600px;
             }
 
             .contador {
                 font-size: 3rem;
-                padding: 1rem;
-            }
-
-            .contenedor.expandido .panel-derecho {
-                width: 95%; /* En celular se mantiene al 95% aunque se oculte el menú */
+                padding: 1rem 2rem;
             }
         }
     </style>
@@ -244,17 +263,19 @@
         <span></span>
     </div>
 
-    <!-- Capa del fondo de letras -->
-    <div class="fondo-texto" id="fondo-texto"></div>
+    <!-- Capa del fondo de letras (Efecto integrado en el CSS) -->
+    <div class="fondo-animado-container">
+        <div class="fondo-texto" id="fondo-texto"></div>
+    </div>
 
     <div class="contenedor" id="contenedor-principal">
-        <!-- Izquierda: Fechas (Este es el que se contrae) -->
+        <!-- Izquierda: Fechas -->
         <div class="panel panel-izquierdo" id="panel-menu">
             <ul class="lista-fechas">
                 <li>12, febrero</li>
                 <li>13, febrero</li>
                 <li>14, febrero</li>
-                <!-- Aquí puedes seguir añadiendo tus fechas -->
+                <!-- Añade más fechas aquí -->
             </ul>
         </div>
 
@@ -268,7 +289,7 @@
         <!-- Derecha: Ideas / Notas -->
         <div class="panel panel-derecho">
             <h2>Mi diario</h2>
-            <p>Aquí puedes empezar a escribir todo lo que sientes. Al ocultar el menú de la izquierda, tendrás mucho más espacio para leer tus pensamientos de forma clara y sin distracciones...</p>
+            <p>Escribe aquí lo que sientas bro...</p>
         </div>
     </div>
 
@@ -279,33 +300,24 @@
         const contenedorPrincipal = document.getElementById('contenedor-principal');
 
         btnMenu.addEventListener('click', () => {
-            // Alterna la clase 'oculto' en el panel izquierdo
             panelMenu.classList.toggle('oculto');
-            // Alterna la clase 'expandido' en el contenedor para hacer la caja de notas más ancha
             contenedorPrincipal.classList.toggle('expandido');
         });
 
-
-        // --- 2. Generar el texto de fondo repetido ---
+        // --- 2. Generar el texto de fondo repetido ("fio te amo") ---
         const contenedorFondo = document.getElementById('fondo-texto');
         const frase = "fio te amo. ";
-        // Repetimos la frase muchas veces para llenar el contenedor gigante
-        contenedorFondo.innerText = frase.repeat(3000);
+        // Generamos un bloque gigante de texto para la animación
+        contenedorFondo.innerText = frase.repeat(2000);
 
+        // --- 3. Calcular los días transcurridos de forma exacta ---
+        // Usamos formato ISO (Año-Mes-Día)
+        const fechaInicio = new Date("2026-02-12T00:00:00"); 
+        const fechaActual = new Date(); // La fecha actual del sistema
 
-        // --- 3. Calcular los días transcurridos ---
-        // El mes en JavaScript empieza en 0 (Enero es 0, Febrero es 1, Mayo es 4)
-        // Fecha de inicio: 12 de Febrero de 2026
-        const fechaInicio = new Date(2026, 1, 12); 
-        const fechaActual = new Date(); // La fecha de hoy
-
-        // Calculamos la diferencia en milisegundos
         const diferenciaMilisegundos = Math.max(0, fechaActual - fechaInicio);
-
-        // Convertimos los milisegundos a días (1000ms * 60s * 60m * 24h)
         const diasTranscurridos = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
 
-        // Mostramos el resultado en el HTML
         document.getElementById('dias-transcurridos').innerText = diasTranscurridos;
     </script>
 
