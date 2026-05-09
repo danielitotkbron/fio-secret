@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Para Fio</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap');
+        /* Importar fuentes: Caveat para el diario y Pinyon Script para el fondo tipo poeta */
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Pinyon+Script&display=swap');
 
         * {
             margin: 0;
@@ -16,7 +17,6 @@
         body {
             font-family: 'Caveat', cursive;
             background-color: #d2b48c;
-            /* Usamos la imagen de fondo que mencionaste */
             background-image: url('3211183.jpg');
             background-size: cover;
             background-position: center;
@@ -28,7 +28,7 @@
             box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.6);
         }
 
-        /* --- FONDO ANIMADO "FIO TE AMO" --- */
+        /* --- FONDO ANIMADO "FIO TE AMO" (Estilo Poeta Antiguo) --- */
         .fondo-capa {
             position: fixed;
             top: -50%;
@@ -36,36 +36,40 @@
             width: 200%;
             height: 200%;
             z-index: 0;
-            pointer-events: none;
-            user-select: none;
+            pointer-events: none; /* No permite interactuar con el fondo */
+            user-select: none;    /* No permite seleccionar el texto */
+            -webkit-user-select: none;
             display: flex;
             flex-wrap: wrap;
-            transform: rotate(-25deg);
-            opacity: 0.12;
-            font-size: 2.5rem;
-            line-height: 1;
-            animation: moverFio 60s linear infinite;
+            transform: rotate(-20deg);
+            opacity: 0.18;
+            font-family: 'Pinyon Script', cursive;
+            font-size: 3.5rem;
+            line-height: 1.2;
+            color: #2b1b0a;
+            animation: moverFio 90s linear infinite;
         }
 
         @keyframes moverFio {
-            from { transform: rotate(-25deg) translateY(0); }
-            to { transform: rotate(-25deg) translateY(-20%); }
+            from { transform: rotate(-20deg) translateY(0); }
+            to { transform: rotate(-20deg) translateY(-25%); }
         }
 
         /* --- BOTÓN MENÚ (TRES RAYITAS) --- */
         .menu-btn {
             position: fixed;
-            top: 15px;
-            left: 15px;
-            z-index: 100;
+            top: 20px;
+            left: 20px;
+            z-index: 110;
             cursor: pointer;
-            background: rgba(255, 255, 255, 0.3);
-            padding: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 10px;
             border-radius: 8px;
             border: 1.5px solid #3e2723;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 5px;
         }
 
         .menu-btn span {
@@ -73,35 +77,39 @@
             height: 3px;
             background: #3e2723;
             border-radius: 2px;
+            transition: 0.3s;
         }
 
-        /* --- BARRA LATERAL (FOTOS) --- */
+        /* --- BARRA LATERAL (INVISIBLE POR DEFECTO) --- */
         .sidebar {
             position: fixed;
-            left: -300px;
+            left: -100%; /* Totalmente fuera de la pantalla */
             top: 0;
-            width: 280px;
+            width: 300px;
             height: 100%;
-            background: rgba(244, 227, 197, 0.95);
+            background: rgba(210, 180, 140, 0.98);
             backdrop-filter: blur(10px);
-            z-index: 90;
-            transition: 0.5s;
-            padding: 70px 20px 20px;
+            z-index: 105;
+            transition: 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
+            padding: 80px 20px 20px;
             overflow-y: auto;
-            border-right: 3px solid #3e2723;
+            border-right: 2px solid #3e2723;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.3);
         }
 
-        .sidebar.active { left: 0; }
+        .sidebar.active {
+            left: 0; /* Aparece al activarse */
+        }
 
-        .sidebar h2 { text-align: center; margin-bottom: 20px; font-size: 2.5rem; }
+        .sidebar h2 { text-align: center; margin-bottom: 30px; font-size: 2.5rem; }
 
         .foto-container {
             width: 100%;
-            margin-bottom: 20px;
-            border: 5px solid white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            transform: rotate(2deg);
+            margin-bottom: 25px;
+            border: 8px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             background: white;
+            transform: rotate(2deg);
         }
 
         .foto-container img { width: 100%; display: block; }
@@ -110,75 +118,68 @@
         .main-content {
             position: relative;
             z-index: 10;
-            padding: 20px;
-            padding-top: 80px;
-            max-width: 800px;
+            padding: 40px 20px;
+            max-width: 700px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* --- CONTADOR --- */
         .contador-box {
-            background: rgba(255, 255, 255, 0.3);
-            border: 3px solid #3e2723;
-            padding: 20px 50px;
-            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid #3e2723;
+            padding: 15px 45px;
+            border-radius: 50px;
             text-align: center;
-            margin-bottom: 40px;
-            transform: rotate(-1deg);
+            margin-bottom: 50px;
         }
 
-        .contador-box h1 { font-size: 4.5rem; line-height: 1; }
-        .contador-box p { font-size: 2rem; }
+        .contador-box h1 { font-size: 4rem; }
+        .contador-box p { font-size: 1.8rem; }
 
-        /* --- SECCIÓN DE DIARIO (LO QUE ELLA LEERÁ) --- */
+        /* --- DIARIO --- */
         .diario {
             width: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            padding: 25px;
-            border: 2px solid #3e2723;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
         }
 
         .entrada {
-            margin-bottom: 30px;
-            border-bottom: 1px dashed #3e2723;
-            padding-bottom: 15px;
+            margin-bottom: 45px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(62, 39, 35, 0.2);
         }
 
-        .fecha-entrada { font-weight: bold; font-size: 1.8rem; color: #5d4037; }
-        .texto-entrada { font-size: 1.8rem; line-height: 1.4; margin-top: 5px; }
+        .fecha-entrada { font-weight: bold; font-size: 2.1rem; color: #5d4037; margin-bottom: 8px; }
+        .texto-entrada { font-size: 1.9rem; line-height: 1.6; text-align: justify; }
 
-        /* --- AJUSTES PARA CELULAR --- */
+        /* --- MÓVIL --- */
         @media (max-width: 600px) {
-            .contador-box h1 { font-size: 3.5rem; }
             .sidebar { width: 85%; }
-            .diario { padding: 15px; }
-            .texto-entrada { font-size: 1.6rem; }
+            .contador-box h1 { font-size: 3rem; }
+            .texto-entrada { font-size: 1.7rem; }
+            .main-content { padding-top: 80px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Botón de apertura -->
     <div class="menu-btn" id="menuBtn">
         <span></span><span></span><span></span>
     </div>
 
+    <!-- Fondo de letras -->
     <div class="fondo-capa" id="fioTexto"></div>
 
+    <!-- Barra lateral de fotos -->
     <aside class="sidebar" id="sidebar">
-        <h2>Nuestros Recuerdos</h2>
-        
-        <!-- Ejemplo de cómo agregar fotos más adelante -->
+        <h2>Recuerdos</h2>
         <div class="foto-container">
-            <img src="image_f018ee.png" alt="Recuerdo 1">
+            <img src="image_f018ee.png" alt="Foto">
         </div>
-
-        <div class="foto-container" style="transform: rotate(-3deg);">
-            <p style="text-align:center; padding:10px;">(Aquí irán más fotos tuyas)</p>
-        </div>
+        <!-- Aquí puedes seguir añadiendo más contenedores de fotos -->
     </aside>
 
     <main class="main-content">
@@ -188,8 +189,6 @@
         </div>
 
         <section class="diario">
-            <!-- AQUÍ ESCRIBE TODO LO QUE SIENTES -->
-            
             <div class="entrada">
                 <p class="fecha-entrada">12 de Febrero</p>
                 <p class="texto-entrada">Recuerdo que ese dia estaba ansioso por ir a verte, cuando por fin estaba yendo, yo estaba tan nervioso porque ya mucho tiempo que no te veia. cuando llegue no sabia ni que hacer, tenia mucha pena JAJS, lo que mas feliz me hizo fue poder verte y pasar tiempo contigo, conocer a santi y pasar tiempo con el tambien, ver esa pelicula que me re asusto y tambien me dio asco JASJ, poder cocinar contigo y estar cerca tuyo es lo que mas extrañe cuando me fui(tenia miedo de que venga tu papá).</p>
@@ -239,41 +238,38 @@
                 <p class="fecha-entrada">9 de Mayo</p>
                 <p class="texto-entrada">Te extraño mucho, Fio. Estoy creando este sitio para que sepas que cada día que pasa sigo pensando en ti y en todo lo que pasamos juntos. quiero que sepas que todos los dias me arrepiento de lo que hice y que de verdad te sigo amando y te amare para toda la vida, queria que sepas la verdad del porque decidi dejar de hablarte, de verdad me arrepiento cada dia y te extraño mucho, perdoname por todo. Probablemente ya hayas hecho tu vida y haz conocido a alguien mas, pero queria que sepas como me sentia, nada mas.</p>
             </div>
-
-            <!-- Puedes copiar y pegar el bloque de arriba para añadir más días -->
-
         </section>
     </main>
 
     <script>
-        // 1. Contador exacto
-        function actualizarDiferencia() {
-            const fechaInicio = new Date('2026-02-12T00:00:00');
+        // Actualización del contador
+        function actualizar() {
+            const inicio = new Date('2026-02-12T00:00:00');
             const hoy = new Date();
-            const diff = hoy - fechaInicio;
-            const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const dias = Math.floor((hoy - inicio) / (1000 * 60 * 60 * 24));
             document.getElementById('num-dias').innerText = `${dias} / 365`;
         }
 
-        // 2. Fondo animado
-        document.getElementById('fioTexto').innerText = "fio te amo ".repeat(1500);
+        // Fondo animado
+        document.getElementById('fioTexto').innerText = "fio te amo ".repeat(1200);
 
-        // 3. Abrir/Cerrar menú
-        const menuBtn = document.getElementById('menuBtn');
-        const sidebar = document.getElementById('sidebar');
-        
-        menuBtn.onclick = () => {
-            sidebar.classList.toggle('active');
+        // Lógica del menú lateral
+        const btn = document.getElementById('menuBtn');
+        const side = document.getElementById('sidebar');
+
+        btn.onclick = (e) => {
+            e.stopPropagation();
+            side.classList.toggle('active');
         };
 
-        // Cerrar menú al tocar fuera (útil en celular)
-        document.addEventListener('click', (e) => {
-            if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
-                sidebar.classList.remove('active');
+        // Cerrar si toca fuera del menú (importante en celular)
+        document.onclick = (e) => {
+            if (!side.contains(e.target) && side.classList.contains('active')) {
+                side.classList.remove('active');
             }
-        });
+        };
 
-        actualizarDiferencia();
+        actualizar();
     </script>
 </body>
 </html>
