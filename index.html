@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diario - Fio</title>
+    <title>Para Fio</title>
     <style>
-        /* Importar fuente de escritura a mano */
         @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap');
 
         * {
@@ -16,13 +15,17 @@
 
         body {
             font-family: 'Caveat', cursive;
-            background-color: #d2b48c; /* Color papel base */
+            background-color: #d2b48c;
+            /* Usamos la imagen de fondo que mencionaste */
+            background-image: url('3211183.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             color: #3e2723;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            overflow-x: hidden;
             position: relative;
-            /* Efecto de bordes quemados/antiguos */
-            box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.7);
+            box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.6);
         }
 
         /* --- FONDO ANIMADO "FIO TE AMO" --- */
@@ -35,198 +38,202 @@
             z-index: 0;
             pointer-events: none;
             user-select: none;
-            -webkit-user-select: none;
             display: flex;
             flex-wrap: wrap;
-            align-content: flex-start;
             transform: rotate(-25deg);
-            opacity: 0.15; /* Sutil para que no moleste la lectura */
-            font-size: 2.2rem;
-            line-height: 1.1;
-            animation: moverFondo 60s linear infinite;
+            opacity: 0.12;
+            font-size: 2.5rem;
+            line-height: 1;
+            animation: moverFio 60s linear infinite;
         }
 
-        @keyframes moverFondo {
+        @keyframes moverFio {
             from { transform: rotate(-25deg) translateY(0); }
             to { transform: rotate(-25deg) translateY(-20%); }
         }
 
-        /* --- MENÚ HAMBURGUESA --- */
-        .btn-menu {
+        /* --- BOTÓN MENÚ (TRES RAYITAS) --- */
+        .menu-btn {
             position: fixed;
-            top: 20px;
-            left: 20px;
+            top: 15px;
+            left: 15px;
             z-index: 100;
             cursor: pointer;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid #3e2723;
-            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 8px;
+            border-radius: 8px;
+            border: 1.5px solid #3e2723;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
-        .btn-menu div {
+        .menu-btn span {
             width: 25px;
             height: 3px;
-            background-color: #3e2723;
-            margin: 5px 0;
-            transition: 0.3s;
+            background: #3e2723;
+            border-radius: 2px;
         }
 
-        /* --- CONTENEDOR PRINCIPAL --- */
-        .wrapper {
-            display: flex;
-            height: 100vh;
+        /* --- BARRA LATERAL (FOTOS) --- */
+        .sidebar {
+            position: fixed;
+            left: -300px;
+            top: 0;
+            width: 280px;
+            height: 100%;
+            background: rgba(244, 227, 197, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 90;
+            transition: 0.5s;
+            padding: 70px 20px 20px;
+            overflow-y: auto;
+            border-right: 3px solid #3e2723;
+        }
+
+        .sidebar.active { left: 0; }
+
+        .sidebar h2 { text-align: center; margin-bottom: 20px; font-size: 2.5rem; }
+
+        .foto-container {
+            width: 100%;
+            margin-bottom: 20px;
+            border: 5px solid white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transform: rotate(2deg);
+            background: white;
+        }
+
+        .foto-container img { width: 100%; display: block; }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        .main-content {
+            position: relative;
+            z-index: 10;
             padding: 20px;
             padding-top: 80px;
-            z-index: 10;
-            position: relative;
-            gap: 20px;
-        }
-
-        /* Panel Izquierdo (Menu Fechas) */
-        .sidebar {
-            width: 250px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            border: 2px solid #3e2723;
-            border-radius: 15px;
-            padding: 20px;
-            overflow-y: auto;
-            transition: 0.4s;
-        }
-
-        .sidebar.oculto {
-            transform: translateX(-300px);
-            width: 0;
-            padding: 0;
-            margin: 0;
-            opacity: 0;
-        }
-
-        .sidebar h3 { font-size: 2rem; border-bottom: 1px solid #3e2723; margin-bottom: 10px; }
-        .sidebar ul { list-style: none; font-size: 1.6rem; }
-        .sidebar li { padding: 5px 0; border-bottom: 1px dashed rgba(0,0,0,0.2); }
-
-        /* Panel Central (Contador) */
-        .main-center {
-            flex: 1;
+            max-width: 800px;
+            margin: 0 auto;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .contador-caja {
-            background: rgba(255, 255, 255, 0.2);
+        /* --- CONTADOR --- */
+        .contador-box {
+            background: rgba(255, 255, 255, 0.3);
             border: 3px solid #3e2723;
-            padding: 20px 40px;
-            border-radius: 20px 5px 25px 8px/8px 20px 5px 25px;
+            padding: 20px 50px;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
             text-align: center;
-            margin-bottom: 20px;
-            transform: rotate(-2deg);
+            margin-bottom: 40px;
+            transform: rotate(-1deg);
         }
 
-        .contador-caja h1 { font-size: 4rem; }
+        .contador-box h1 { font-size: 4.5rem; line-height: 1; }
+        .contador-box p { font-size: 2rem; }
 
-        /* Panel Derecho (Notas) */
-        .notas {
-            width: 40%;
-            background: rgba(255, 255, 255, 0.1);
+        /* --- SECCIÓN DE DIARIO (LO QUE ELLA LEERÁ) --- */
+        .diario {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 25px;
             border: 2px solid #3e2723;
-            border-radius: 10px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            transition: 0.4s;
         }
 
-        .wrapper.expandido .notas { width: 70%; }
-
-        .notas h2 { text-align: center; font-size: 2.2rem; }
-        
-        textarea {
-            flex: 1;
-            background: transparent;
-            border: none;
-            outline: none;
-            font-family: 'Caveat', cursive;
-            font-size: 1.8rem;
-            resize: none;
-            color: #3e2723;
+        .entrada {
+            margin-bottom: 30px;
+            border-bottom: 1px dashed #3e2723;
+            padding-bottom: 15px;
         }
 
-        /* Responsive Móvil */
-        @media (max-width: 768px) {
-            .wrapper { flex-direction: column; overflow-y: auto; }
-            .sidebar { width: 100%; height: 200px; }
-            .notas { width: 100%; height: 400px; }
-            .contador-caja h1 { font-size: 2.5rem; }
+        .fecha-entrada { font-weight: bold; font-size: 1.8rem; color: #5d4037; }
+        .texto-entrada { font-size: 1.8rem; line-height: 1.4; margin-top: 5px; }
+
+        /* --- AJUSTES PARA CELULAR --- */
+        @media (max-width: 600px) {
+            .contador-box h1 { font-size: 3.5rem; }
+            .sidebar { width: 85%; }
+            .diario { padding: 15px; }
+            .texto-entrada { font-size: 1.6rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="btn-menu" id="btnMenu">
-        <div></div><div></div><div></div>
+    <div class="menu-btn" id="menuBtn">
+        <span></span><span></span><span></span>
     </div>
 
-    <div class="fondo-capa" id="fondoTexto"></div>
+    <div class="fondo-capa" id="fioTexto"></div>
 
-    <div class="wrapper" id="contenedor">
-        <aside class="sidebar" id="menuLateral">
-            <h3>Fechas</h3>
-            <ul>
-                <li>12, febrero</li>
-                <li>13, febrero</li>
-                <li>...</li>
-                <li>09, mayo (Hoy)</li>
-            </ul>
-        </aside>
+    <aside class="sidebar" id="sidebar">
+        <h2>Nuestros Recuerdos</h2>
+        
+        <!-- Ejemplo de cómo agregar fotos más adelante -->
+        <div class="foto-container">
+            <img src="image_f018ee.png" alt="Recuerdo 1">
+        </div>
 
-        <main class="main-center">
-            <div class="contador-caja">
-                <h1 id="num-dias">0 / 365</h1>
-                <p style="font-size: 1.4rem;">días desde que te perdí</p>
+        <div class="foto-container" style="transform: rotate(-3deg);">
+            <p style="text-align:center; padding:10px;">(Aquí irán más fotos tuyas)</p>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="contador-box">
+            <h1 id="num-dias">0 / 365</h1>
+            <p>días</p>
+        </div>
+
+        <section class="diario">
+            <!-- AQUÍ ESCRIBE TODO LO QUE SIENTES -->
+            
+            <div class="entrada">
+                <p class="fecha-entrada">12 de Febrero</p>
+                <p class="texto-entrada">Hoy fue el día que todo cambió. Recuerdo que cuando te vi por primera vez sentí algo que no puedo explicar con palabras...</p>
             </div>
 
-            <section class="notas">
-                <h2>Mis Notas</h2>
-                <textarea id="textoDiario" placeholder="Escribe aquí cómo te sientes hoy..."></textarea>
-            </section>
-        </main>
-    </div>
+            <div class="entrada">
+                <p class="fecha-entrada">9 de Mayo</p>
+                <p class="texto-entrada">Te extraño mucho, Fio. Estoy creando este sitio para que sepas que cada día que pasa sigo pensando en ti y en todo lo que vivimos juntos.</p>
+            </div>
+
+            <!-- Puedes copiar y pegar el bloque de arriba para añadir más días -->
+
+        </section>
+    </main>
 
     <script>
-        // 1. Contador de días exacto (Feb 12, 2026 a Mayo 9, 2026)
-        function calcularDias() {
-            const inicio = new Date('2026-02-12T00:00:00');
-            const hoy = new Date(); // Detecta la fecha actual (Mayo 9, 2026)
-            const diferencia = hoy - inicio;
-            const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        // 1. Contador exacto
+        function actualizarDiferencia() {
+            const fechaInicio = new Date('2026-02-12T00:00:00');
+            const hoy = new Date();
+            const diff = hoy - fechaInicio;
+            const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
             document.getElementById('num-dias').innerText = `${dias} / 365`;
         }
 
-        // 2. Fondo animado "fio te amo"
-        const capa = document.getElementById('fondoTexto');
-        capa.innerText = "fio te amo ".repeat(1500);
+        // 2. Fondo animado
+        document.getElementById('fioTexto').innerText = "fio te amo ".repeat(1500);
 
-        // 3. Menú Hamburguesa
-        const btn = document.getElementById('btnMenu');
-        const menu = document.getElementById('menuLateral');
-        const wrapper = document.getElementById('contenedor');
-
-        btn.onclick = () => {
-            menu.classList.toggle('oculto');
-            wrapper.classList.toggle('expandido');
+        // 3. Abrir/Cerrar menú
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        
+        menuBtn.onclick = () => {
+            sidebar.classList.toggle('active');
         };
 
-        // 4. Guardado automático del diario
-        const areaTexto = document.getElementById('textoDiario');
-        areaTexto.value = localStorage.getItem('diario_fio') || "";
-        areaTexto.oninput = () => {
-            localStorage.setItem('diario_fio', areaTexto.value);
-        };
+        // Cerrar menú al tocar fuera (útil en celular)
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
 
-        calcularDias();
+        actualizarDiferencia();
     </script>
 </body>
 </html>
