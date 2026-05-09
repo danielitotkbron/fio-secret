@@ -55,32 +55,88 @@
             100% { transform: rotate(-35deg) translateY(-10%); }
         }
 
+        /* --- BOTÓN MENÚ HAMBURGUESA --- */
+        .btn-menu {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.4);
+            border: 2px solid #5a3b1c;
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            backdrop-filter: blur(2px);
+            transition: background 0.3s;
+        }
+
+        .btn-menu:hover {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .btn-menu span {
+            display: block;
+            width: 30px;
+            height: 3px;
+            background-color: #5a3b1c;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
         /* --- ESTRUCTURA PRINCIPAL --- */
         .contenedor {
             display: flex;
             justify-content: space-between;
             padding: 2rem;
+            padding-top: 5rem; /* Espacio para que no choque con el botón del menú */
             height: 100vh;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
+            gap: 2rem;
+            transition: all 0.4s ease;
         }
 
-        /* Estilo general para las cajas de los costados */
+        /* Estilo general para las cajas */
         .panel {
             background: rgba(255, 255, 255, 0.3);
             border: 2px solid #5a3b1c;
             /* Borde con estilo de dibujo a mano alzada */
             border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
             padding: 2rem;
-            width: 25%;
-            height: 80%;
+            height: 85%;
             backdrop-filter: blur(2px);
             overflow-y: auto;
+            transition: all 0.4s ease;
         }
 
         /* Ocultar barra de scroll en paneles */
         .panel::-webkit-scrollbar {
-            width: 0px;
+            width: 5px;
+        }
+        .panel::-webkit-scrollbar-thumb {
+            background: rgba(90, 59, 28, 0.3);
+            border-radius: 10px;
+        }
+
+        /* Panel Izquierdo (Fechas) */
+        .panel-izquierdo {
+            width: 25%;
+            min-width: 250px;
+            opacity: 1;
+        }
+
+        /* Clase para ocultar el panel izquierdo cuando se toca el menú */
+        .panel-izquierdo.oculto {
+            width: 0;
+            min-width: 0;
+            padding: 0;
+            border: none;
+            opacity: 0;
+            margin: 0;
+            overflow: hidden;
         }
 
         h2 {
@@ -92,6 +148,8 @@
         .lista-fechas {
             list-style: none;
             font-size: 2rem;
+            /* Evitar que el texto se rompa feo al contraerse */
+            white-space: nowrap; 
         }
 
         .lista-fechas li {
@@ -108,7 +166,7 @@
 
         /* Panel Central */
         .panel-central {
-            width: 40%;
+            width: 35%;
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -123,22 +181,75 @@
             border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
             padding: 1.5rem 3rem;
             text-align: center;
-            transform: rotate(-3deg); /* Ligera inclinación como en tu dibujo */
+            transform: rotate(-3deg);
+            white-space: nowrap;
         }
 
+        /* Panel Derecho (Ideas/Notas) */
         .panel-derecho {
+            width: 35%;
             font-size: 2rem;
+            flex-grow: 1; /* Permite que este panel crezca si hay espacio */
+        }
+
+        /* Cuando el panel izquierdo está oculto, el derecho y el central se ajustan */
+        .contenedor.expandido .panel-derecho {
+            width: 60%; /* Toma mucho más espacio para que puedas leer cómodamente */
+        }
+
+        /* --- ADAPTACIÓN PARA PANTALLAS PEQUEÑAS (CELULARES) --- */
+        @media (max-width: 900px) {
+            body {
+                overflow: auto; /* Permite hacer scroll hacia abajo */
+            }
+            
+            .contenedor {
+                flex-direction: column;
+                align-items: center;
+                height: auto;
+                padding-top: 5rem;
+            }
+
+            .panel-izquierdo {
+                width: 95%;
+                height: 300px;
+            }
+
+            .panel-central {
+                width: 100%;
+            }
+
+            .panel-derecho {
+                width: 95%;
+                height: 500px; /* Más alto para escribir en celular */
+            }
+
+            .contador {
+                font-size: 3rem;
+                padding: 1rem;
+            }
+
+            .contenedor.expandido .panel-derecho {
+                width: 95%; /* En celular se mantiene al 95% aunque se oculte el menú */
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- Botón Menú Hamburguesa -->
+    <div class="btn-menu" id="btn-menu" title="Ocultar/Mostrar Fechas">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
     <!-- Capa del fondo de letras -->
     <div class="fondo-texto" id="fondo-texto"></div>
 
-    <div class="contenedor">
-        <!-- Izquierda: Fechas -->
-        <div class="panel">
+    <div class="contenedor" id="contenedor-principal">
+        <!-- Izquierda: Fechas (Este es el que se contrae) -->
+        <div class="panel panel-izquierdo" id="panel-menu">
             <ul class="lista-fechas">
                 <li>12, febrero</li>
                 <li>13, febrero</li>
@@ -156,26 +267,40 @@
 
         <!-- Derecha: Ideas / Notas -->
         <div class="panel panel-derecho">
-            <h2>nose</h2>
-            <p>done ideas...</p>
+            <h2>Mi diario</h2>
+            <p>Aquí puedes empezar a escribir todo lo que sientes. Al ocultar el menú de la izquierda, tendrás mucho más espacio para leer tus pensamientos de forma clara y sin distracciones...</p>
         </div>
     </div>
 
     <script>
-        // 1. Generar el texto de fondo repetido
+        // --- 1. Lógica del Menú Hamburguesa ---
+        const btnMenu = document.getElementById('btn-menu');
+        const panelMenu = document.getElementById('panel-menu');
+        const contenedorPrincipal = document.getElementById('contenedor-principal');
+
+        btnMenu.addEventListener('click', () => {
+            // Alterna la clase 'oculto' en el panel izquierdo
+            panelMenu.classList.toggle('oculto');
+            // Alterna la clase 'expandido' en el contenedor para hacer la caja de notas más ancha
+            contenedorPrincipal.classList.toggle('expandido');
+        });
+
+
+        // --- 2. Generar el texto de fondo repetido ---
         const contenedorFondo = document.getElementById('fondo-texto');
         const frase = "fio te amo. ";
         // Repetimos la frase muchas veces para llenar el contenedor gigante
         contenedorFondo.innerText = frase.repeat(3000);
 
-        // 2. Calcular los días transcurridos
+
+        // --- 3. Calcular los días transcurridos ---
         // El mes en JavaScript empieza en 0 (Enero es 0, Febrero es 1, Mayo es 4)
         // Fecha de inicio: 12 de Febrero de 2026
         const fechaInicio = new Date(2026, 1, 12); 
         const fechaActual = new Date(); // La fecha de hoy
 
         // Calculamos la diferencia en milisegundos
-        const diferenciaMilisegundos = fechaActual - fechaInicio;
+        const diferenciaMilisegundos = Math.max(0, fechaActual - fechaInicio);
 
         // Convertimos los milisegundos a días (1000ms * 60s * 60m * 24h)
         const diasTranscurridos = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
